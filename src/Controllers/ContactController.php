@@ -14,7 +14,9 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        
+        $contacts = Contact::all();
+        return view('contact::index',compact('contacts'));
     }
 
     /**
@@ -35,20 +37,42 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('here');
         $validated = $request->validate([
-            'email' => 'required|unique:contacts|max:255',
+            'email' => 'required|max:255',
             'name' => 'required',
+            'phone_number' => 'required',
+            'area' => 'required',
+            'description' => '',
+            'attachment' => '',
         ]);
-        // dd('here');
         $contact = new Contact();
         $contact->name = $request->name;
         $contact->email = $request->email;
+        $contact->phone_number = $request->phone_number;
         $contact->area = $request->area;
         $contact->description = $request->description;
-        $contact->save();
-        return back()->with('success','Contact added successfully.');
-        // dd($request->all());
+        try {
+            $contact->save();
+            $details['email'] = $request->email;
+            dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($details));
+            return back()->with('success','Thank you for contacting with us.');
+        } catch (\Throwable $th) {
+            return back()->with('error','Failed.');
+        }
+        
+       
+    }
+    public function markded_all_seen(Request $request){
+        try{
+            Contact::where('status','unseen')->update([
+                'status' => 'seen'
+            ]);
+            return back()->with('success','Marked all contacts as seen.');
+        }
+        catch(Exception $ex){
+            return back()->with('error','Failed!');
+        }
+        dd($request->all());
     }
 
     /**

@@ -32,20 +32,15 @@
                 <label for="email">Email</label>
                 <input name="email" type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter your email">
               </div>
-            <div class="col-md-6">
-                <label for="phone_number">Phone</label>
-                <input name="phone_number" type="phone_number" class="form-control" id="phone_number" aria-describedby="phone_number" placeholder="Enter your phone number">
-              </div>
-            <div class="col-md-6">
-                <label for="phone_number">What are you looking for?</label>
-                <select name="area" id="area" class="form-control">
-                  <option value="software_development">Software Development</option>
-                  <option value="software_architecture">Software Architecture</option>
-                  <option value="business_discussion">Business Discussion </option>
-                </select>
-              </div>
             </div>
-                
+                <div class="form-group">
+                  <label for="area"> What are you looking for?</label>
+                    <select name="area" id="area" class="form-control">
+                      <option value="software_development">Software Development</option>
+                      <option value="software_architecture">Software Architecture</option>
+                      <option value="business_discussion">Business Discussion </option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label class="form-group-label" for="description">Description</label>
                   <textarea name="description" id="description" class="form-control" cols="30" rows="3"></textarea>
