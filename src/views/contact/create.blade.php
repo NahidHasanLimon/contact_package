@@ -20,7 +20,7 @@
           <h6>Contact With Me</h6>
         </div>
         <div class="card-body">
-          <form action="{{route('contact.post')}}" method="POST">
+          <form action="{{route('contact.store')}}" method="POST">
             @csrf
             <div class="form-group row"> 
               <div class="col-md-6">

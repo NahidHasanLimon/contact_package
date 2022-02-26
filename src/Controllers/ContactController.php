@@ -15,8 +15,8 @@ class ContactController extends Controller
     public function index()
     {
         
-        $contacts = Contact::all();
-        return view('contact::index',compact('contacts'));
+        $contacts = Contact::orderBy('id', 'desc')->get();
+        return view('contact::contact.index',compact('contacts'));
     }
 
     /**
@@ -26,7 +26,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return view('contact::contact.create');
     }
 
     /**
@@ -62,7 +62,7 @@ class ContactController extends Controller
         
        
     }
-    public function markded_all_seen(Request $request){
+    public function marked_all_seen(Request $request){
         try{
             Contact::where('status','unseen')->update([
                 'status' => 'seen'
@@ -72,7 +72,7 @@ class ContactController extends Controller
         catch(Exception $ex){
             return back()->with('error','Failed!');
         }
-        dd($request->all());
+        
     }
 
     /**
