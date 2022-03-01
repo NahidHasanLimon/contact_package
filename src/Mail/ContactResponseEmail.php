@@ -16,9 +16,10 @@ class ContactResponseEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    protected $details;
+    public function __construct($details)
     {
-        //
+        $this->details = $details;
     }
 
     /**
@@ -28,6 +29,7 @@ class ContactResponseEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('contact::email.test');
+
+        return $this->html($this->details['body']);
     }
 }

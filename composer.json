@@ -19,7 +19,10 @@
     "autoload": {
         "psr-4": {
             "Nahidhasanlimon\\Contact\\": "src"
-        }
+        },
+        "files": [
+            "Helper/Templatehelpers.php"
+        ]
     },
     "extra": {
         "laravel": {

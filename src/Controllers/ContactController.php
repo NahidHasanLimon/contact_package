@@ -5,6 +5,9 @@ namespace Nahidhasanlimon\Contact\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Nahidhasanlimon\Contact\Models\Contact;
+use Nahidhasanlimon\Contact\Models\EmailTemplate;
+use TemplateHelper;
+
 class ContactController extends Controller
 {
     /**
@@ -14,6 +17,7 @@ class ContactController extends Controller
      */
     public function index()
     {
+        
         
         $contacts = Contact::orderBy('id', 'desc')->get();
         return view('contact::contact.index',compact('contacts'));
@@ -26,6 +30,15 @@ class ContactController extends Controller
      */
     public function create()
     {
+        $template = EmailTemplate::find(1);
+        $template_helper = new TemplateHelper();
+        
+
+
+        $details['body'] = $template_helper->contact_response_email_content($template->content);
+        $details['to'] = 'nh.limon2010@gmail.com';
+            // dd();
+      dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($details));
         return view('contact::contact.create');
     }
 
@@ -53,8 +66,11 @@ class ContactController extends Controller
         $contact->description = $request->description;
         try {
             $contact->save();
+
             $details['email'] = $request->email;
+            // dd();
             dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($details));
+
             return back()->with('success','Thank you for contacting with us.');
         } catch (\Throwable $th) {
             return back()->with('error','Failed.');

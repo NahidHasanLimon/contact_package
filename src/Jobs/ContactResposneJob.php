@@ -32,7 +32,14 @@ class ContactResposneJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new ContactResponseEmail();
-        Mail::to($this->details['email'])->send($email);
+        $email = new ContactResponseEmail($this->details);
+
+        Mail::to($this->details['to'])->send($email);
+    //    $view =  ['html'=> 'body here'];
+        // Mail::send(['text' => 'view'],['user' => 'Hey'], function($message)  {
+        //     $message->to('nh.limon2010@gmail.com',  'Nahid Limon');
+        //     $message->from('youremail@example.com', 'Your Name'); 
+        //     $message->subject('Hi there');
+        // });
     }
 }

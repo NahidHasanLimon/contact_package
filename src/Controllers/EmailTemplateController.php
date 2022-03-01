@@ -66,13 +66,10 @@ class EmailTemplateController extends Controller
     public function show(EmailTemplate $template)
     {
         $e_temp = file_get_contents(__DIR__ . '/../views/email/template.blade.php');
-        // $e_temp = htmlspecialchars_decode($template->content);
         $replacements = array(
             'content' => htmlspecialchars_decode($template->content),
         );
         $updated_temp = $this->bind_to_template($replacements, $e_temp);
-        // $updated_temp = $this->bind_to_template($replacements, $e_temp);
-
         return view('contact::template.view',compact('template','updated_temp','e_temp'));
     }
     function bind_to_template($replacements, $template) {
@@ -89,11 +86,9 @@ class EmailTemplateController extends Controller
                 'status' => 'inactive'
             ]
         );
-        // $template->status = 'active';
         $template->update([
             'status' => 'active'
         ]);
-        // dd($template->get());
         return back()->with('success','Active successfully.');
 
     }
