@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Nahidhasanlimon\Contact\Models\Contact;
 use Nahidhasanlimon\Contact\Models\EmailTemplate;
 use TemplateHelper;
+use Nahidhasanlimon\Contact\Jobs\ContactResposneJob;
 
 class ContactController extends Controller
 {
@@ -30,15 +31,13 @@ class ContactController extends Controller
      */
     public function create()
     {
-        $template = EmailTemplate::find(1);
+        $contact = Contact::where('id',1)->first();
+        // dd($contact);
         $template_helper = new TemplateHelper();
-        
-
-
-        $details['body'] = $template_helper->contact_response_email_content($template->content);
-        $details['to'] = 'nh.limon2010@gmail.com';
-            // dd();
-      dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($details));
+        $content = $template_helper->contact_response_email_content($contact);
+        // dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($contact,$content));
+        $contact_array = $contact->toArray();
+        ContactResposneJob::dispatch($contact_array,$content);
         return view('contact::contact.create');
     }
 
@@ -69,7 +68,7 @@ class ContactController extends Controller
 
             $details['email'] = $request->email;
             // dd();
-            dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($details));
+            dispatch(new \Nahidhasanlimon\Contact\Jobs\ContactResposneJob($contact));
 
             return back()->with('success','Thank you for contacting with us.');
         } catch (\Throwable $th) {

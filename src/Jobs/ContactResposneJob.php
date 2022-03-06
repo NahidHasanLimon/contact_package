@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+
 use Nahidhasanlimon\Contact\Mail\ContactResponseEmail;
 use Mail;
 class ContactResposneJob implements ShouldQueue
@@ -19,10 +20,12 @@ class ContactResposneJob implements ShouldQueue
      *
      * @return void
      */
-    protected $details;
-    public function __construct($details)
+    protected $contact;
+    protected $content;
+    public function __construct($contact,$content)
     {
-        $this->details = $details;
+        $this->contact = $contact;
+        $this->content = $content;
     }
 
     /**
@@ -32,14 +35,7 @@ class ContactResposneJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new ContactResponseEmail($this->details);
-
-        Mail::to($this->details['to'])->send($email);
-    //    $view =  ['html'=> 'body here'];
-        // Mail::send(['text' => 'view'],['user' => 'Hey'], function($message)  {
-        //     $message->to('nh.limon2010@gmail.com',  'Nahid Limon');
-        //     $message->from('youremail@example.com', 'Your Name'); 
-        //     $message->subject('Hi there');
-        // });
+        $email = new ContactResponseEmail($this->content);
+        Mail::to($this->contact['email'])->send($email);
     }
 }
